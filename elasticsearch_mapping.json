@@ -1,0 +1,170 @@
+{
+  "mappings": {
+    "properties": {
+      "question_id": {
+        "type": "keyword"
+      },
+      "content": {
+        "type": "text",
+        "analyzer": "math_analyzer",
+        "search_analyzer": "math_search_analyzer",
+        "fields": {
+          "keyword": {
+            "type": "keyword"
+          },
+          "math_symbols": {
+            "type": "text",
+            "analyzer": "math_symbol_analyzer"
+          },
+          "math_concepts": {
+            "type": "text",
+            "analyzer": "math_concept_analyzer"
+          }
+        }
+      },
+      "math_features": {
+        "type": "text",
+        "analyzer": "math_feature_analyzer"
+      },
+      "formula_tokens": {
+        "type": "keyword"
+      },
+      "year": {
+        "type": "keyword"
+      },
+      "season": {
+        "type": "keyword"
+      },
+      "paper_code": {
+        "type": "keyword"
+      },
+      "subject": {
+        "type": "keyword"
+      },
+      "mark_scheme": {
+        "type": "text",
+        "analyzer": "math_analyzer"
+      },
+      "file_path": {
+        "type": "keyword"
+      },
+      "embedding": {
+        "type": "dense_vector",
+        "dims": 384
+      }
+    }
+  },
+  "settings": {
+    "number_of_shards": 1,
+    "number_of_replicas": 0,
+    "analysis": {
+      "analyzer": {
+        "math_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "math_symbol_normalizer",
+            "math_synonyms",
+            "asciifolding"
+          ]
+        },
+        "math_search_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "math_symbol_normalizer",
+            "math_synonyms",
+            "asciifolding",
+            "math_fuzzy"
+          ]
+        },
+        "math_symbol_analyzer": {
+          "tokenizer": "keyword",
+          "filter": [
+            "math_symbol_normalizer"
+          ]
+        },
+        "math_concept_analyzer": {
+          "tokenizer": "standard",
+          "filter": [
+            "lowercase",
+            "math_concept_synonyms"
+          ]
+        },
+        "math_feature_analyzer": {
+          "tokenizer": "keyword",
+          "filter": ["lowercase"]
+        }
+      },
+      "filter": {
+        "math_symbol_normalizer": {
+          "type": "mapping",
+          "mappings": [
+            "× => *",
+            "÷ => /",
+            "≠ => !=",
+            "≤ => <=",
+            "≥ => >=",
+            "± => +-",
+            "√ => sqrt",
+            "π => pi",
+            "α => alpha",
+            "β => beta",
+            "γ => gamma",
+            "δ => delta",
+            "θ => theta",
+            "λ => lambda",
+            "μ => mu",
+            "σ => sigma",
+            "φ => phi",
+            "ψ => psi",
+            "ω => omega",
+            "∫ => integral",
+            "∑ => sum",
+            "∏ => product",
+            "∂ => partial",
+            "∇ => nabla",
+            "∞ => infinity"
+          ]
+        },
+        "math_synonyms": {
+          "type": "synonym",
+          "synonyms": [
+            "differentiate,derivative,diff,d/dx,gradient,slope",
+            "integrate,integration,integral,antiderivative",
+            "solve,find,calculate,determine,compute,evaluate",
+            "function,equation,formula,expression,relation",
+            "graph,plot,curve,sketch,draw,chart",
+            "root,solution,zero,x-intercept,zeros",
+            "maximum,max,peak,highest,supremum,maxima",
+            "minimum,min,lowest,infimum,minima",
+            "polynomial,quadratic,cubic,quartic,quintic",
+            "exponential,exp,e^x",
+            "logarithm,log,ln,natural log,logarithmic",
+            "trigonometric,trig,sine,cosine,tangent,sin,cos,tan",
+            "matrix,matrices,array,grid",
+            "vector,vectors,direction,magnitude",
+            "limit,approach,tends to,converge",
+            "continuous,smooth,unbroken",
+            "domain,input,x-values,independent",
+            "range,output,y-values,dependent"
+          ]
+        },
+        "math_concept_synonyms": {
+          "type": "synonym",
+          "synonyms": [
+            "calculus,differentiation,integration,limits",
+            "algebra,polynomial,linear,quadratic",
+            "geometry,triangle,circle,angle,area,volume",
+            "trigonometry,sine,cosine,tangent,radians,degrees",
+            "statistics,probability,mean,variance,distribution"
+          ]
+        },
+        "math_fuzzy": {
+          "type": "phonetic",
+          "encoder": "metaphone"
+        }
+      }
+    }
+  }
+}
