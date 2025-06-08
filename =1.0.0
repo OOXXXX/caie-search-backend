@@ -1,5 +1,0 @@
-Collecting lmdb
-  Using cached lmdb-1.6.2-cp311-cp311-macosx_10_9_universal2.whl.metadata (1.1 kB)
-Using cached lmdb-1.6.2-cp311-cp311-macosx_10_9_universal2.whl (166 kB)
-Installing collected packages: lmdb
-Successfully installed lmdb-1.6.2
